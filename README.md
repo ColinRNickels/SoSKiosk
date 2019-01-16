@@ -32,7 +32,7 @@ Raspberry Pi and Arduino based project to highlight student projects
     - sudo killall OMXPlayer
 
 ## Logical Flow
-'''
+```
 
                           +------------------+
                           |                  |
@@ -69,4 +69,4 @@ Raspberry Pi and Arduino based project to highlight student projects
 |                       |  |          |  |             |  |          |
 +------------------------  +----------+  +-------------+  +----------+
 
-'''
+```
