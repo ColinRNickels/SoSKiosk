@@ -3,35 +3,36 @@ Raspberry Pi and Arduino based project to highlight student projects
 
 ## To Do
 
-[] startPlaying
+[ ] startPlaying
     - flashStart
     - setProgress
     - callOmx
     - checkRFID
 
-[] stopPlaying
+[ ] stopPlaying
     - flashStop
     - resetProgressbar
     - killOMX
     - checkRFID
 
-[] flashStart
+[ ] flashStart
     - two blinks green
     - some pattern showing it's playing
 
-[] flashStop
+[ ] flashStop
     - two blinks red
 
-[] setProgress
+[ ] setProgress
     - playtime = length of song
     - for x in numOfLed: light led(x)
         wait perled
     - stopPlaying
 
-[] killOMX
+[ ] killOMX
     - sudo killall OMXPlayer
 
 ## Logical Flow
+'''
 
                           +------------------+
                           |                  |
@@ -67,3 +68,5 @@ Raspberry Pi and Arduino based project to highlight student projects
 | startPlaying(RFIDVal) |  | Continue |  | stopPlaying |  | Continue |
 |                       |  |          |  |             |  |          |
 +------------------------  +----------+  +-------------+  +----------+
+
+'''
