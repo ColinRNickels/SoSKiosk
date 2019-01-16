@@ -1,7 +1,6 @@
 # SoSKiosk
-Raspberry Pi and Arduino based project to highlight student project
+Raspberry Pi and Arduino based project to highlight student projects
 
-<<<<<<< HEAD
 ##To Do
 [] startPlaying
     - flashStart
@@ -32,51 +31,6 @@ Raspberry Pi and Arduino based project to highlight student project
     - sudo killall OMXPlayer
 
 =======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Logical Flow
                           +------------------+
                           |                  |
                           |    checkRFID     |
@@ -111,4 +65,3 @@ Raspberry Pi and Arduino based project to highlight student project
 | startPlaying(RFIDVal) |  | Continue |  | stopPlaying |  | Continue |
 |                       |  |          |  |             |  |          |
 +------------------------  +----------+  +-------------+  +----------+
->>>>>>> 9f8a6d725bca27445544717b1d091366ccbe3d25
