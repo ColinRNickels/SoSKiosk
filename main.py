@@ -3,7 +3,8 @@ from time import sleep
 from gpiozero import LED
 import os
 
-ser = serial.Serial('/dev/ttyUSB0', 115200)
+ser = serial.Serial('/dev/ttyUSB0', 9600)
+print("Serial Started")
 counter = 32
 
 red =  LED(2)
@@ -14,8 +15,10 @@ def flashStart(led):
 lastPlayed = 'n'
 while True:
     counter +=1
+    print(ser.readline())
     nowPlaying = ser.readline().decode().replace(' ','').strip()
     sleep(.1)
+    print('got nothing')
     print(nowPlaying)
     if (nowPlaying == lastPlayed):
         continue
