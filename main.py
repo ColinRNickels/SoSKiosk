@@ -2,19 +2,33 @@ import serial
 from time import sleep, time
 import os
 
+<<<<<<< HEAD
 rfidSerial = serial.Serial('/dev/tty.SLAB_USBtoUART', 115200, timeout=3)
 neoPixel
 print("serial connection made")
+=======
+ser = serial.Serial('/dev/ttyUSB0', 9600)
+print("Serial Started")
+counter = 32
+>>>>>>> refs/remotes/origin/master
 
 keys = ["0416DD324C5881", "04278572585881"]
 lastPlayed = 'start'
 readTime= time()
 while True:
+<<<<<<< HEAD
     nowPlaying = ser.readline().decode().replace(' ','').strip()
     # if (nowPlaying == ''):
     #     print("Newlined")
     #     nowPlaying = 'n'
     # print(readTime)
+=======
+    counter +=1
+    print(ser.readline())
+    nowPlaying = ser.readline().decode().replace(' ','').strip()
+    sleep(.1)
+    print('got nothing')
+>>>>>>> refs/remotes/origin/master
     print(nowPlaying)
     sleep(.1)
     if (nowPlaying == lastPlayed):
