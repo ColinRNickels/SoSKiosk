@@ -42,5 +42,5 @@ void loop(void) {
   else {
     Serial.println("n");
   }
-  delay(100);
+  delay(50);
 }
