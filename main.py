@@ -3,17 +3,13 @@ from time import sleep, time
 import subprocess
 import os
 
-def findSerials():
-	listOfSerials = []
-	output = subprocess.check_output('ls /dev/ | grep ttyUSB', shell=True)
-	listOfSerials = output.decode('ascii').split()
-	print(listOfSerials)
-	return listOfSerials
+
 
 def startPlaying(rfid):
     ##Searches RFID ID
     ##Sends newRecord "0"
     ##starts OMX Player
+    print("starting track: " + rfid)
     loc = getTrack(rfid)
     subprocess.call('omxplayer -o alsa' + loc)
 
@@ -24,14 +20,17 @@ def stillPlaying():
 		output = subprocess.check_output("ps cax | grep omxplayer", shell=True, stderr=subprocess.STDOUT)
 		output = output.decode('ascii').split()
 		lSer.write('2'.encode('ascii'))
+		print("Still Playing")
 		return True
 	except subprocess.CalledProcessError:
 		print('Not Running')
-		lSer.write('1'.encode('ascii'))
+		#lSer.write('1'.encode('ascii'))
+		print("no longer playing")
 		return False
 
 def idleState():
     ##Sends idle signal
+    print("Idle")
     lSer.write('3'.encode('ascii'))
 
 def playTrack(key):
@@ -65,20 +64,17 @@ def stopPlaying():
 	try:
 		output = subprocess.check_output("ps cax | grep omxplayer", shell=True, stderr=subprocess.STDOUT)
 		output = output.decode('ascii').split()
-	#print(output)
 		for item in output:
 			if item.isdigit():
 				subprocess.call('kill ' + item, shell=True)
 				print("Killed " + item)
 		lSer.write('1'.encode('ascii'))
 	except subprocess.CalledProcessError:
-		print('Not Running')
 		lSer.write('1'.encode('ascii'))
 		    
 
-serials = findSerials()
-rSer = serial.Serial('/dev/' + serials[1], 115200, timeout=1.5)
-lSer = serial.Serial('/dev/' + serials[0], 115200)
+rSer = serial.Serial('/home/pi/ttyRFID', 115200, timeout=1.5)
+lSer = serial.Serial('/home/pi/ttyLED', 115200)
 print("serial connections made")
 
 
@@ -90,10 +86,11 @@ while True:
 	sleep(.2)
 	print(nowPlaying)
 	if (nowPlaying == lastPlayed):
-	#print("lastPlayed is the same as now playing: " + lastPlayed)
+		print("lastPlayed is the same as now playing: " + lastPlayed)
 		print("#####" * 10)
 		if (nowPlaying == ''):
 			idleState()
+			nowPlaying = ''
 		elif stillPlaying():
 			continue
 	elif (nowPlaying in keys):
@@ -102,8 +99,13 @@ while True:
 		playTrack(nowPlaying)
 		print("nowPlaying is: " + nowPlaying)
 	elif (nowPlaying == ''):
-		stopPlaying()
+		if stillPlaying():
+			stopPlaying()
+			nowPlaying = ''
+		else:
+			continue
 	lastPlayed = nowPlaying
+	
 
 
 
