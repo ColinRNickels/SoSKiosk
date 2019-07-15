@@ -3,8 +3,6 @@ from time import sleep, time
 import subprocess
 import os
 
-
-
 def startPlaying(rfid):
     ##Searches RFID ID
     ##Sends newRecord "0"
@@ -69,25 +67,26 @@ def stopPlaying():
 				subprocess.call('kill ' + item, shell=True)
 				print("Killed " + item)
 		lSer.write('1'.encode('ascii'))
+	
 	except subprocess.CalledProcessError:
 		lSer.write('1'.encode('ascii'))
 		    
 
-rSer = serial.Serial('/home/pi/ttyRFID', 115200, timeout=1.5)
+rSer = serial.Serial('/home/pi/ttyRFID', 115200, timeout=0)
 lSer = serial.Serial('/home/pi/ttyLED', 115200)
 print("serial connections made")
-
-
 keys = getKeys()
 lastPlayed = 'start'
 readTime= time()
 while True:
 	nowPlaying = rSer.readline().decode().replace(' ','').strip()
+	if (nowPlaying == 'nothing'):
+		print("NONE NONE NONE NONE")
+		nowPlaying = ''
 	sleep(.2)
-	print(nowPlaying)
 	if (nowPlaying == lastPlayed):
-		print("lastPlayed is the same as now playing: " + lastPlayed)
-		print("#####" * 10)
+		#print("lastPlayed is the same as now playing: " + lastPlayed)
+		#print("#####" * 10)
 		if (nowPlaying == ''):
 			idleState()
 			nowPlaying = ''
@@ -100,6 +99,7 @@ while True:
 		print("nowPlaying is: " + nowPlaying)
 	elif (nowPlaying == ''):
 		if stillPlaying():
+			print("Called Stop Playing")
 			stopPlaying()
 			nowPlaying = ''
 		else:
