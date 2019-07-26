@@ -3,13 +3,6 @@ from time import sleep, time
 import subprocess
 import os
 
-def startPlaying(rfid):
-    ##Searches RFID ID
-    ##Sends newRecord "0"
-    ##starts OMX Player
-    print("starting track: " + rfid)
-    loc = getTrack(rfid)
-    subprocess.call('omxplayer -o alsa' + loc)
 
 def stillPlaying():
     ##Checks ps cax to see if OMX player still running
@@ -21,7 +14,6 @@ def stillPlaying():
 		print("Still Playing")
 		return True
 	except subprocess.CalledProcessError:
-		print('Not Running')
 		#lSer.write('1'.encode('ascii'))
 		print("no longer playing")
 		return False
@@ -33,22 +25,19 @@ def idleState():
 
 def playTrack(key):
 	loc = ''
-	with open('records.csv') as file:
-		data = file.readlines()
+	with open('/home/pi/SoSKiosk/records.csv') as file: #need to use full file location
+		data = file.readlines() 
 		for line in data:
 			line1 = line.split(',')
 			if (key == line1[1].strip().replace(" ", "")):
 				loc = line1[2].strip()
-				#print(loc)
 				command = "omxplayer -o both /home/pi/SoSKiosk/songs/" + loc
-				print(command)
 	subprocess.Popen(command, shell=True)
-	#os.system(command)
 	
 def getKeys():
     ##Opens file, returns list of all keys
     keys = []
-    with open('records.csv') as file:
+    with open('/home/pi/SoSKiosk/records.csv') as file:
         data = file.readlines()
         for line in data:
             line1 = line.split(',')
@@ -78,15 +67,18 @@ print("serial connections made")
 keys = getKeys()
 lastPlayed = 'start'
 readTime= time()
+idleState()
 while True:
+	if (lastPlayed == 'start'):
+		idleState()
 	nowPlaying = rSer.readline().decode().replace(' ','').strip()
 	if (nowPlaying == 'nothing'):
 		print("NONE NONE NONE NONE")
 		nowPlaying = ''
 	sleep(.2)
 	if (nowPlaying == lastPlayed):
-		#print("lastPlayed is the same as now playing: " + lastPlayed)
-		#print("#####" * 10)
+		print("lastPlayed is the same as now playing: " + lastPlayed)
+		print("#####" * 10)
 		if (nowPlaying == ''):
 			idleState()
 			nowPlaying = ''
@@ -105,6 +97,7 @@ while True:
 		else:
 			continue
 	lastPlayed = nowPlaying
+	
 	
 
 
