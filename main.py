@@ -61,7 +61,7 @@ def stopPlaying():
 		lSer.write('1'.encode('ascii'))
 		    
 
-rSer = serial.Serial('/home/pi/ttyRFID', 115200, timeout=0)
+rSer = serial.Serial('/home/pi/ttyRFID', 115200, timeout=.3)
 lSer = serial.Serial('/home/pi/ttyLED', 115200)
 print("serial connections made")
 keys = getKeys()
@@ -85,6 +85,9 @@ while True:
 			nowPlaying = ''
 		elif stillPlaying():
 			continue
+		else:
+			lSer.write('1'.encode('ascii'))
+
 	elif (nowPlaying in keys):
 		print("Playing New Song")
 		lSer.write('0'.encode('ascii'))
