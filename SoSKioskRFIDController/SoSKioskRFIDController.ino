@@ -16,14 +16,6 @@ NfcAdapter nfc = NfcAdapter(pn532spi);
 PN532_I2C pn532_i2c(Wire);
 NfcAdapter nfc = NfcAdapter(pn532_i2c);
 #endif
-void writeString(String stringData) { // Used to serially push out a String with Serial.write()
-
-  for (int i = 0; i < stringData.length(); i++)
-  {
-    Serial.write(stringData[i]);   // Push each char 1 by 1 on each loop pass
-  }
-
-}// end writeString
 
 //def checkTag
 void setup(void) {
@@ -40,7 +32,11 @@ void loop(void) {
   
   }
   else {
-    Serial.println("n");
+    Serial.println("nothing");
   }
+<<<<<<< HEAD
+  delay(150);
+=======
   delay(300);
+>>>>>>> 1a4ea5ea31f0bbd8627f8ecd847a51f28727f4bb
 }
