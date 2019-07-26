@@ -27,20 +27,6 @@ void setup() {
 
 
 void loop() {
-//  static uint8_t hue = 0;
-//  Circles();
-//  Circles();
-//  Circles();
-//  delay(1500);
-//  startPlaying();
-//  delay(1500);
-//  stopPlaying();
-//  delay(1500);
-//  for (int i = 0; i <200; i++){
-//  idleState();
-//  }
-//  delay(1500);
-  //  clearLEDS();
   if (Serial.available() > 0) {
       // read the incoming byte:
       incomingByte = Serial.read();
@@ -142,7 +128,8 @@ void idleState(){
   // reverse the direction of the fading at the ends of the fade: 
   if(brightness == 0 || brightness == 255) {
     fadeAmount = -fadeAmount ; 
-  }    
+  }
+  //Add Serial Read and check here?  If not idle, break  
   delay(20);  // This delay sets speed of the fade. I usually do from 5-75 but you can always go higher.
 }
 

@@ -14,8 +14,8 @@ def stillPlaying():
 		print("Still Playing")
 		return True
 	except subprocess.CalledProcessError:
-		#lSer.write('1'.encode('ascii'))
-		print("no longer playing")
+		print("no longer playing stillPlaying = False")
+		
 		return False
 
 def idleState():
@@ -54,7 +54,7 @@ def stopPlaying():
 		for item in output:
 			if item.isdigit():
 				subprocess.call('kill ' + item, shell=True)
-				print("Killed " + item)
+				#print("Killed " + item)
 		lSer.write('1'.encode('ascii'))
 	
 	except subprocess.CalledProcessError:
@@ -72,6 +72,7 @@ while True:
 	if (lastPlayed == 'start'):
 		idleState()
 	nowPlaying = rSer.readline().decode().replace(' ','').strip()
+	print(nowPlaying)
 	if (nowPlaying == 'nothing'):
 		print("NONE NONE NONE NONE")
 		nowPlaying = ''
@@ -94,8 +95,7 @@ while True:
 			print("Called Stop Playing")
 			stopPlaying()
 			nowPlaying = ''
-		else:
-			continue
+		
 	lastPlayed = nowPlaying
 	
 	
