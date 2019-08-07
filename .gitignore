@@ -5,6 +5,7 @@ output.txt
 __pycache__/
 *.py[cod]
 *$py.class
+*.nodemcu.bin
 
 # C extensions
 *.so

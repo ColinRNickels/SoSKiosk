@@ -41,10 +41,18 @@ void loop() {
       }else if (incomingByte == 51){ // if stop
         for (int i = 0; i <200; i++){
         idleState();
+        if (Serial.available() > 0) {
+          // read the incoming byte:
+          incomingByte = Serial.read();
+          if (incomingByte != 51){
+            break
+          }
         }
       }
       }
-  delay(100);
+  while(Serial.available() >0) {
+    Serial.read();
+  }
   }
 
 void Circles() {
@@ -131,6 +139,7 @@ void idleState(){
   }
   //Add Serial Read and check here?  If not idle, break  
   delay(20);  // This delay sets speed of the fade. I usually do from 5-75 but you can always go higher.
+  
 }
 
 void clearLEDS(){
