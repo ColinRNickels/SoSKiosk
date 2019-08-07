@@ -2,6 +2,9 @@ import serial
 from time import sleep, time
 import subprocess
 import os
+from gpiozero import DigitalOutputDevice
+
+resetter = DigitalOutputDevice(16, initial_value=True) #connected to pin2 on ESP32 Board, when pulled low trigger reset.
 
 
 def stillPlaying():
@@ -59,20 +62,38 @@ def stopPlaying():
 	
 	except subprocess.CalledProcessError:
 		lSer.write('1'.encode('ascii'))
-		    
 
-rSer = serial.Serial('/home/pi/ttyRFID', 115200, timeout=.3)
-lSer = serial.Serial('/home/pi/ttyLED', 115200)
-print("serial connections made")
+def connectRFIDSerial():
+	rSer = serial.Serial('/home/pi/ttyRFID', 115200, timeout=.3)
+	print("serial connections made")
+	return rSer
+
+def connectLEDSerial():
+	lSer = serial.Serial('/home/pi/ttyLED', 115200)
+	print("serial connections made")
+	return lSer
+
+
+
+def closeSerial():
+	lSer.close()
+	rSer.close()
+
+rSer = connectRFIDSerial()
+lSer = connectLEDSerial()
+
 keys = getKeys()
 lastPlayed = 'start'
 readTime= time()
 idleState()
+resetCount = 0 
 while True:
 	if (lastPlayed == 'start'):
 		idleState()
-	nowPlaying = rSer.readline().decode().replace(' ','').strip()
-	print(nowPlaying)
+	try:
+		nowPlaying = rSer.readline().decode().replace(' ','').strip()
+	except:
+		print("nowPlaying = " + nowPlaying)
 	if (nowPlaying == 'nothing'):
 		print("NONE NONE NONE NONE")
 		nowPlaying = ''
@@ -100,10 +121,13 @@ while True:
 			nowPlaying = ''
 		
 	lastPlayed = nowPlaying
-	
-	
-
-
-
-		
+	resetCount +=1
+	print(resetCount)
+	if (resetCount % 500 == 0):
+		closeSerial()
+		rSer = connectRFIDSerial()
+		lSer = connectLEDSerial()
+		resetter.off()
+		sleep(.05)
+		resetter.on()
 
